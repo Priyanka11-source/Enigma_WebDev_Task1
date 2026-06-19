@@ -1,0 +1,6 @@
+{
+  "name": "CodexGate",
+  "description": "The ultimate computer science workstation: interactive DSA & GATE syllabus tree, full-featured coding sandbox, customized study notes, and an advanced AI Oracle tutor.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
