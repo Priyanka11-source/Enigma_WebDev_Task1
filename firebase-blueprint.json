@@ -1,0 +1,82 @@
+{
+  "entities": {
+    "Note": {
+      "title": "Note",
+      "description": "An interactive CSE study note",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The auth user ID of the author"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the note or algorithmic topic"
+        },
+        "category": {
+          "type": "string",
+          "enum": ["LeetCode", "DSA", "GATE Prep", "Web Dev", "General"],
+          "description": "The category pillar"
+        },
+        "content": {
+          "type": "string",
+          "description": "Standard study markdown content"
+        },
+        "codeSnippet": {
+          "type": "string",
+          "description": "Embedded code syntax snippet"
+        },
+        "codeLanguage": {
+          "type": "string",
+          "description": "Language syntax for highlighting"
+        },
+        "tags": {
+          "type": "array",
+          "description": "List of associated keyword tags"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp representing creation time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp representing last modification time"
+        }
+      },
+      "required": ["userId", "title", "category", "content", "createdAt", "updatedAt"]
+    },
+    "TrackingState": {
+      "title": "TrackingState",
+      "description": "The progress tracking stats for DSA and GATE Prep",
+      "type": "object",
+      "properties": {
+        "gate": {
+          "type": "object",
+          "description": "GATE subject completeness tracking mapping"
+        },
+        "leetcode": {
+          "type": "object",
+          "description": "LeetCode count metrics for Easy, Medium, and Hard"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last synced timestamp"
+        }
+      },
+      "required": ["updatedAt"]
+    }
+  },
+  "firestore": {
+    "/notes/{noteId}": {
+      "schema": "Note",
+      "description": "User notes detailing questions and answers"
+    },
+    "/users/{userId}/tracking/{stateId}": {
+      "schema": "TrackingState",
+      "description": "DSA and exam progress state document tracker"
+    }
+  }
+}

@@ -11,9 +11,36 @@ const firebaseConfig = {
   appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app, "ai-studio-7ae13ecc-07ff-4eb7-accc-4e1d8cbbe44b");
+// Check if Firebase config has placeholder values
+const isInvalidConfig = Object.values(firebaseConfig).some(val => 
+  typeof val === 'string' && (val.includes('test_') || val.includes('YOUR_') || val.includes('replace_with'))
+);
+
+let app, auth, db;
+
+if (isInvalidConfig) {
+  console.warn('⚠️  Firebase credentials are using test/placeholder values. Please configure valid credentials in .env.local');
+  console.warn('   See SECURITY_SETUP.md for instructions on setting up Firebase credentials.');
+  
+  // Create dummy/mock objects for development
+  app = { config: firebaseConfig };
+  auth = { currentUser: null };
+  db = { projectId: firebaseConfig.projectId };
+} else {
+  try {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app, "ai-studio-7ae13ecc-07ff-4eb7-accc-4e1d8cbbe44b");
+  } catch (error) {
+    console.error('🔴 Firebase initialization failed:', error.message);
+    console.error('   Please verify your Firebase credentials in .env.local are correct.');
+    
+    // Fallback mock objects
+    app = { config: firebaseConfig };
+    auth = { currentUser: null };
+    db = { projectId: firebaseConfig.projectId };
+  }
+}
 
 export const OperationType = {
   CREATE: 'create',
